@@ -34,8 +34,8 @@ public class ClassicGameActivity extends AppCompatActivity {
 
     public void startCustomGame(View view) {
         String mines = minesText.getText().toString();
-        String height = minesText.getText().toString();
-        String width = minesText.getText().toString();
+        String height = heightText.getText().toString();
+        String width = widthText.getText().toString();
 
         try {
             showGame(Integer.valueOf(height), Integer.valueOf(width), Integer.valueOf(mines), "");
