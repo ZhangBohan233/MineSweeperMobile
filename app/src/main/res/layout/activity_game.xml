@@ -27,12 +27,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="restartGame"
                 android:text="@string/gaming_icon" />
 
             <TextView
                 android:id="@+id/timeRemaining"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
                 android:layout_weight="1" />
         </LinearLayout>
 

@@ -48,7 +48,10 @@ public class GameView extends View {
     private float upLeftY = 0;
 
     private float lastTouchX, lastTouchY;
+    private float downX, downY;
     private int activePointerId;
+
+    private boolean started;
 
     private ScaleGestureDetector scaleDetector;
 
@@ -100,6 +103,7 @@ public class GameView extends View {
 
     public void setGame(Game game) {
         this.game = game;
+        started = false;
     }
 
     private void setScalar() {
@@ -145,14 +149,17 @@ public class GameView extends View {
 
                 lastTouchX = x;
                 lastTouchY = y;
+                downX = x;
+                downY = y;
 
                 activePointerId = event.getPointerId(0);
 
-                int[] rc = getRowColByClickPos(lastTouchX, lastTouchY);
+                int[] rc = getRowColByClickPos(x, y);
                 game.pressDown(rc[0], rc[1]);
+
+                invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
-//                game.getMatrix().releaseAll();
                 pointerIndex = event.findPointerIndex(activePointerId);
 
                 x = event.getX(pointerIndex);
@@ -180,19 +187,23 @@ public class GameView extends View {
 
                 // TODO: Bug
                 if (System.currentTimeMillis() - startClickTime < MAX_CLICK_DURATION &&
-                        Math.abs(x - lastTouchX) < MAX_CLICK_DISTANCE &&
-                        Math.abs(y - lastTouchY) < MAX_CLICK_DISTANCE) {
+                        Math.abs(x - downX) < MAX_CLICK_DISTANCE &&
+                        Math.abs(y - downY) < MAX_CLICK_DISTANCE) {
                     performClick();
+                } else {
+                    invalidate();
                 }
 
                 activePointerId = INVALID_POINTER_ID;
                 break;
             case MotionEvent.ACTION_CANCEL:
-                game.getMatrix().releaseAll();
+//                game.getMatrix().releaseAll();
                 activePointerId = INVALID_POINTER_ID;
+//                System.out.println(123);
                 break;
             case MotionEvent.ACTION_POINTER_UP:
-                game.getMatrix().releaseAll();
+//                System.out.println(456);
+//                game.getMatrix().releaseAll();
                 pointerIndex = event.getActionIndex();
                 final int pointerId = event.getPointerId(pointerIndex);
                 if (pointerId == activePointerId) {
@@ -214,6 +225,12 @@ public class GameView extends View {
         if (!game.isLost() && !game.isWin()) {
             int[] rc = getRowColByClickPos(lastTouchX, lastTouchY);
 
+            if (!started) {
+                started = true;
+                parent.startTimer();
+                game.startGame(rc[0], rc[1]);
+            }
+
             if (parent.isFlagMode()) {
                 int res = game.flagClick(rc[0], rc[1]);
                 parent.changeMine(res);
@@ -224,10 +241,10 @@ public class GameView extends View {
             invalidate();
 
             if (game.isLost()) {
-                parent.showLostIcon();
+                parent.lost();
             }
             if (game.isWin()) {
-                parent.showVictoryIcon();
+                parent.victory();
                 parent.setMineRemaining(0);
             }
         }
@@ -296,6 +313,10 @@ public class GameView extends View {
         float beginX = c * BLOCK_SIZE * scalar + upLeftX;
         float endY = beginY + BLOCK_SIZE * scalar;
         float endX = beginX + BLOCK_SIZE * scalar;
+
+        if (endX < 0 || endY < 0) return;  // out of upper or left bound
+        if (beginX > screenWidth || beginY > screenHeight) return;  // out of lower or right bound
+
         switch (rep) {
             case Matrix.UNOPENED:
                 break;

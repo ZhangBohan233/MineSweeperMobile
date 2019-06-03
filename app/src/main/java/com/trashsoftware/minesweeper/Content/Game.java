@@ -4,13 +4,21 @@ public class Game {
 
     private Matrix matrix;
 
+    private boolean started;
+
     private boolean lost;
 
     private boolean won;
 
+    private final int totalMines;
+
     public Game(int height, int width, int mines) {
         matrix = new Matrix(height, width);
-        matrix.initialize(mines);
+        totalMines = mines;
+    }
+
+    public void startGame(int r, int c) {
+        matrix.initialize(totalMines, r, c);
     }
 
     public Matrix getMatrix() {

@@ -31,10 +31,11 @@ public class Matrix {
                 flagMatrix[r][c] = -1;
     }
 
-    void initialize(int mines) {
+    void initialize(int mines, int excludedR, int excludedC) {
         List<Integer> list = new ArrayList<>();
+        int exclusion = excludedR * width + excludedC;
         for (int i = 0; i < height * width; i++) {
-            list.add(i);
+            if (i != exclusion) list.add(i);
         }
 
         for (int i = 0; i < mines; i++) {
@@ -91,6 +92,7 @@ public class Matrix {
     }
 
     public void releaseAll() {
+//        System.out.println(123);
         for (int r = 0; r < height; r++) {
             for (int c = 0; c < width; c++) {
                 if (flagMatrix[r][c] == PRESSED) {
