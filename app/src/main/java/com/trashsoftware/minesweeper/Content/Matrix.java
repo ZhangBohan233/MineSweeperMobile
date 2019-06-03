@@ -55,7 +55,7 @@ public class Matrix {
         return width;
     }
 
-    public boolean isMine(int r, int c) {
+    boolean isMine(int r, int c) {
         return mineMatrix[r][c];
     }
 

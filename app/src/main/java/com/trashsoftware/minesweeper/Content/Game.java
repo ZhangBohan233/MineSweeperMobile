@@ -62,16 +62,12 @@ public class Game {
     }
 
     public void pressDown(int r, int c) {
-        if (matrix.getItemAt(r, c) > 0) {
-            for (int r1 = r - 1; r1 <= r + 1; r1++) {
-                for (int c1 = c - 1; c1 <= c + 1; c1++) {
+        if (matrix.getItemAt(r, c) > 0)
+            for (int r1 = r - 1; r1 <= r + 1; r1++)
+                for (int c1 = c - 1; c1 <= c + 1; c1++)
                     if (inBound(r1, c1) && (r1 != r || c1 != c) &&
-                            matrix.getItemAt(r1, c1) == Matrix.UNOPENED) {
+                            matrix.getItemAt(r1, c1) == Matrix.UNOPENED)
                         matrix.press(r1, c1);
-                    }
-                }
-            }
-        }
     }
 
     private void lose() {
@@ -99,7 +95,7 @@ public class Game {
         matrix.setNumber(r, c, count);
     }
 
-    private boolean inBound(int r, int c) {
+    public boolean inBound(int r, int c) {
         return r >= 0 && r < matrix.getHeight() && c >= 0 && c < matrix.getWidth();
     }
 

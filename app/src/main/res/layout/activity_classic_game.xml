@@ -15,9 +15,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="startEasyGame"
+            android:background="?android:attr/selectableItemBackground"
             android:orientation="vertical">
 
             <TextView
+                style="@style/LargeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/easy" />
@@ -76,9 +78,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="startMediumGame"
+            android:background="?android:attr/selectableItemBackground"
             android:orientation="vertical">
 
             <TextView
+                style="@style/LargeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/medium" />
@@ -137,9 +141,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="startHardGame"
+            android:background="?android:attr/selectableItemBackground"
             android:orientation="vertical">
 
             <TextView
+                style="@style/LargeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/hard" />
@@ -196,9 +202,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="startCustomGame"
+                android:background="?android:attr/selectableItemBackground"
                 android:orientation="vertical">
 
                 <TextView
+                    style="@style/LargeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/custom" />

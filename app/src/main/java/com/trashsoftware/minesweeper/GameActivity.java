@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.trashsoftware.minesweeper.Content.Game;
 import com.trashsoftware.minesweeper.GraphContent.GameView;
+import com.trashsoftware.minesweeper.GraphContent.MsDialogFragment;
+
+import java.util.Locale;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -28,6 +31,8 @@ public class GameActivity extends AppCompatActivity {
     private int minesRemaining;
 
     private Timer timer;
+
+    private MsDialogFragment dialogFragment = new MsDialogFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,12 +111,23 @@ public class GameActivity extends AppCompatActivity {
 
     public void victory() {
         showVictoryIcon();
-        double timeUsed = stopTimer();
+        showWinDialog(stopTimer());
     }
 
     public void lost() {
         showLostIcon();
         timer.stop();
+    }
+
+    private void showWinDialog(double timeUsed) {
+        String msg = String.format(getResources().getConfiguration().locale,
+                "%s\n%s %s: %.2f %s",
+                getString(R.string.happy_icon),
+                getString(R.string.success),
+                getString(R.string.time_used),
+                timeUsed,
+                getString(R.string.seconds));
+        dialogFragment.show(this.getSupportFragmentManager(), msg);
     }
 }
 

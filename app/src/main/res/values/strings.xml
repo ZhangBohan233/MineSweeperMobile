@@ -16,4 +16,9 @@
     <string name="sad_icon">*_*</string>
     <string name="clicking_icon">0v0</string>
     <string name="gaming_icon">$_$</string>
+
+    <string name="ok">OK</string>
+    <string name="success">Success!</string>
+    <string name="time_used">Time Used</string>
+    <string name="seconds">s</string>
 </resources>

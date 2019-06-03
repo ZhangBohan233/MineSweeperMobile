@@ -155,9 +155,10 @@ public class GameView extends View {
                 activePointerId = event.getPointerId(0);
 
                 int[] rc = getRowColByClickPos(x, y);
-                game.pressDown(rc[0], rc[1]);
-
-                invalidate();
+                if (game.inBound(rc[0], rc[1])) {
+                    game.pressDown(rc[0], rc[1]);
+                    invalidate();
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 pointerIndex = event.findPointerIndex(activePointerId);
@@ -224,6 +225,8 @@ public class GameView extends View {
     public boolean performClick() {
         if (!game.isLost() && !game.isWin()) {
             int[] rc = getRowColByClickPos(lastTouchX, lastTouchY);
+
+            if (!game.inBound(rc[0], rc[1])) return false;
 
             if (!started) {
                 started = true;
@@ -388,10 +391,11 @@ public class GameView extends View {
     }
 
     private void drawPicture(Bitmap bmp, float x, float y, Canvas canvas) {
-        int bmpScale = (int) (BLOCK_SIZE * scalar) - 4;
+        int pictureMargin = (int) (BLOCK_SIZE * scalar * 0.1);
+        int bmpScale = (int) (BLOCK_SIZE * scalar) - pictureMargin * 2;
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bmp, bmpScale, bmpScale, true);
 
-        canvas.drawBitmap(scaledBitmap, x + 2, y + 2, picturePaint);
+        canvas.drawBitmap(scaledBitmap, x + pictureMargin, y + pictureMargin, picturePaint);
     }
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
