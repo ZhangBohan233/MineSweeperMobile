@@ -8,15 +8,19 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.trashsoftware.minesweeper.Content.DataManager;
 import com.trashsoftware.minesweeper.Content.Game;
 import com.trashsoftware.minesweeper.GraphContent.GameView;
 import com.trashsoftware.minesweeper.GraphContent.MsDialogFragment;
 
+import java.io.IOException;
 import java.util.Locale;
 
 public class GameActivity extends AppCompatActivity {
 
     private int height, width, totalMines;
+
+    private String gameName;
 
     private GameView gameView;
 
@@ -43,7 +47,7 @@ public class GameActivity extends AppCompatActivity {
         int height = intent.getIntExtra("height", 2);
         int width = intent.getIntExtra("width", 2);
         int mines = intent.getIntExtra("mines", 1);
-        String title = intent.getStringExtra("title");
+        gameName = intent.getStringExtra("title");
 
         this.height = height;
         this.width = width;
@@ -68,7 +72,7 @@ public class GameActivity extends AppCompatActivity {
         if (timer != null) {
             stopTimer();
         }
-        timer = new Timer(this, timeText);
+        timer = new Timer(this);
         timeText.setText("0");
         remainingText.setText(String.valueOf(totalMines));
         gameButton.setText(R.string.gaming_icon);
@@ -79,7 +83,7 @@ public class GameActivity extends AppCompatActivity {
         timer.start();
     }
 
-    public double stopTimer() {
+    public long stopTimer() {
         return timer.stop();
     }
 
@@ -111,7 +115,15 @@ public class GameActivity extends AppCompatActivity {
 
     public void victory() {
         showVictoryIcon();
-        showWinDialog(stopTimer());
+        long time = stopTimer();
+        if (!gameName.equals("Custom")) {
+            try {
+                DataManager.updateRecord(this, gameName, time);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        showWinDialog(time);
     }
 
     public void lost() {
@@ -119,15 +131,24 @@ public class GameActivity extends AppCompatActivity {
         timer.stop();
     }
 
-    private void showWinDialog(double timeUsed) {
+    private void showWinDialog(long timeUsed) {
+        double dt = (double) timeUsed / 1000;
         String msg = String.format(getResources().getConfiguration().locale,
                 "%s\n%s %s: %.2f %s",
                 getString(R.string.happy_icon),
                 getString(R.string.success),
                 getString(R.string.time_used),
-                timeUsed,
+                dt,
                 getString(R.string.seconds));
         dialogFragment.show(this.getSupportFragmentManager(), msg);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }
 
@@ -138,29 +159,27 @@ class Timer {
 
     private boolean running;
 
-    private TextView textView;
-
-    private TimerProcess process;
+//    private TextView textView;
 
     private GameActivity parent;
 
-    Timer(GameActivity parent, TextView textView) {
-        this.textView = textView;
+    Timer(GameActivity parent) {
+//        this.textView = textView;
         this.parent = parent;
     }
 
     void start() {
         running = true;
         startTime = System.currentTimeMillis();
-        process = new TimerProcess();
+        TimerProcess process = new TimerProcess();
         Thread thread = new Thread(process);
         thread.start();
     }
 
-    double stop() {
+    long stop() {
         running = false;
         long stopTime = System.currentTimeMillis();
-        return (double) (stopTime - startTime) / 1000;
+        return stopTime - startTime;
     }
 
     private class TimerProcess implements Runnable {

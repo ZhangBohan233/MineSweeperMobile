@@ -9,6 +9,8 @@
     <string name="hard">Hard</string>
     <string name="custom">Custom</string>
 
+    <string name="record">Record</string>
+
     <string name="height">Height</string>
     <string name="width">Width</string>
 
@@ -21,4 +23,7 @@
     <string name="success">Success!</string>
     <string name="time_used">Time Used</string>
     <string name="seconds">s</string>
+
+    <string name="size_range">Height and width should be within the range</string>
+    <string name="mines_range">Number of mines should be within the range</string>
 </resources>

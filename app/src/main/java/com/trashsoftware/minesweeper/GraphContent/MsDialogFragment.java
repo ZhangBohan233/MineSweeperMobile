@@ -18,7 +18,6 @@ public class MsDialogFragment extends DialogFragment {
                 .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        ((GraphActivity) Objects.requireNonNull(getContext())).finish();
                     }
                 });
         return builder.create();

@@ -52,6 +52,10 @@ public class Game {
     public void footClick(int r, int c) {
         if (matrix.getItemAt(r, c) == Matrix.UNOPENED) {
             // Open an unopened field
+            if (matrix.isMine(r, c)) {
+                lose();
+                return;
+            }
             recursiveShow(r, c);
         } else if (matrix.getItemAt(r, c) > 0) {
             // Press an
@@ -76,10 +80,6 @@ public class Game {
     }
 
     private void showOne(int r, int c) {
-        if (matrix.isMine(r, c)) {
-            lose();
-            return;
-        }
         int count = 0;
         for (int r1 = r - 1; r1 <= r + 1; r1++) {
             for (int c1 = c - 1; c1 <= c + 1; c1++) {

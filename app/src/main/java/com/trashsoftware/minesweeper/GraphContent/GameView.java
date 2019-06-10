@@ -81,7 +81,7 @@ public class GameView extends View {
         paint2 = new NumberPaint(0xFF00BF00);  // 0,192,0
         paint3 = new NumberPaint(Color.RED);
         paint4 = new NumberPaint(0xFF00000F);  // 0,0,128
-        paint5 = new NumberPaint(0xFFF00000);  // 128,0,0
+        paint5 = new NumberPaint(0xFF7F0000);  // 127,0,0
         paint6 = new NumberPaint(0xFF2F4F4F);  // 47,79,79
         paint7 = new NumberPaint(Color.BLACK);
         paint8 = new NumberPaint(Color.DKGRAY);
